@@ -1,0 +1,16 @@
+{
+    "netID": "000013",
+    "tenantID": "adra",
+    "id": "adra-tn-porthmadog",
+    "clusterID": "eu1.cloud.thethings.industries",
+    "updatedAt": "2022-08-28T11:03:07.154661Z",
+    "location": {
+      "latitude": 52.93010012476487,
+      "longitude": -4.1343891620635995,
+      "altitude": 0,
+      "accuracy": 0
+    },
+    "antennaPlacement": "OUTDOOR",
+    "antennaCount": 1,
+    "online": true
+}
