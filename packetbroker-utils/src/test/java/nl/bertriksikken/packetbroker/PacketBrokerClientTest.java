@@ -53,12 +53,11 @@ public final class PacketBrokerClientTest {
         analyzeTenants(onlineWithLocation);
 
         // write TTN geojson
-        writeGeojson(gateways, "ttn", new File("ttn_gateways.json"));
+        writeGeojson(ttnGateways, new File("ttn_gateways.json"));
     }
 
-    private void writeGeojson(List<GatewayInfo> gateways, String tenantId, File file) throws IOException {
-        List<GatewayInfo> filtered = gateways.stream().filter(g -> g.location.isValid())
-                .filter(g -> g.tenantId.equals(tenantId)).collect(Collectors.toList());
+    private void writeGeojson(List<GatewayInfo> gateways, File file) throws IOException {
+        List<GatewayInfo> filtered = gateways.stream().filter(g -> g.location.isValid()).collect(Collectors.toList());
 
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode root = mapper.createObjectNode();
@@ -82,10 +81,12 @@ public final class PacketBrokerClientTest {
             ObjectNode properties = mapper.createObjectNode();
             feature.set("properties", properties);
             properties.put("id", gatewayInfo.id);
+            properties.put("tenantID", gatewayInfo.tenantId);
             properties.put("eui", gatewayInfo.eui);
             properties.put("altitude", gatewayInfo.location.altitude);
             properties.put("online", gatewayInfo.online);
             properties.put("antennaPlacement", gatewayInfo.antennaPlacement.toString());
+            properties.put("antennaCount", gatewayInfo.antennaCount);
         }
 
         mapper.writeValue(file, root);
