@@ -1,5 +1,7 @@
 package nl.bertriksikken.packetbroker.export;
 
+import java.util.Locale;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -26,7 +28,7 @@ public final class GatewayInfoCsv {
     public void setStatus(boolean online) {
         this.online = online;
     }
-    
+
     public void setAntenna(double latitude, double longitude, double altitude, EAntennaPlacement antennaPlacement) {
         this.latitude = latitude;
         this.longitude = longitude;
@@ -57,5 +59,12 @@ public final class GatewayInfoCsv {
     public Double altitude = Double.NaN;
     @JsonProperty("antenna")
     public EAntennaPlacement antenna = EAntennaPlacement.UNKNOWN;
+
+    @Override
+    public String toString() {
+        return String.format(Locale.ROOT,
+                "{id=%s,eui=%s,tenant=%s,online=%s,latitude=%f,longitude=%f, altitude=%f,antenna=%s}", id, eui, tenant,
+                online, latitude, longitude, altitude, antenna);
+    }
 
 }

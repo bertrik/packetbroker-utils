@@ -15,6 +15,8 @@ public final class GatewayInfoCsvTest {
         GatewayInfoCsv info = new GatewayInfoCsv("id", "eui", "tenant");
         info.setStatus(true);
         info.setAntenna(53.7, 4.7, 0.0, EAntennaPlacement.INDOOR);
+        Assert.assertNotNull(info.toString());
+
         CsvMapper mapper = new CsvMapper();
         String csvData = mapper.writerWithSchemaFor(GatewayInfoCsv.class).writeValueAsString(info);
         Assert.assertEquals("id,eui,tenant,true,53.7,4.7,0.0,INDOOR\n", csvData);
