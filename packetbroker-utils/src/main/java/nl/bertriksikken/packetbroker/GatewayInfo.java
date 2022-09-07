@@ -69,6 +69,12 @@ public final class GatewayInfo {
         public boolean isValid() {
             return Double.isFinite(latitude) && Double.isFinite(longitude) && Double.isFinite(altitude);
         }
+
+        @Override
+        public String toString() {
+            return String.format(Locale.ROOT, "{latitude=%f,longitude=%f,altitude=%f,accuracy=%f}", latitude, longitude,
+                    altitude, accuracy);
+        }
     }
 
     public static enum EAntennaPlacement {

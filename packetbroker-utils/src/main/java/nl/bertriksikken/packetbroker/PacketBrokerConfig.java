@@ -1,6 +1,7 @@
 package nl.bertriksikken.packetbroker;
 
 import java.time.Duration;
+import java.util.Locale;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
@@ -12,17 +13,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class PacketBrokerConfig {
 
     @JsonProperty("url")
-    private final String url = "https://mapper.packetbroker.net/";
-    
+    private String url = "https://mapper.packetbroker.net/";
+
     @JsonProperty("timeout")
-    private final int timeoutSec = 20; 
-    
+    private int timeoutSec = 20;
+
     public String getUrl() {
         return url;
     }
-    
+
     public Duration getTimeout() {
         return Duration.ofSeconds(timeoutSec);
+    }
+
+    @Override
+    public String toString() {
+        return String.format(Locale.ROOT, "{url=%s,timeoutSec=%d}", url, timeoutSec);
     }
 
 }
