@@ -6,6 +6,7 @@ dependencies {
     implementation libraries.guava
     implementation libraries.retrofit
     implementation libraries.jackson
+    implementation libraries.reload4j
 }
 
 // fix scripts executable bit and line endings
