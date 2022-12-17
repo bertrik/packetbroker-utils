@@ -1,9 +1,9 @@
 ext {
     libraries = [:]
 
-    jacksonVersion = '2.13.4'
+    jacksonVersion = '2.14.1'
     retrofitVersion = '2.9.0'
-    slf4jVersion = '2.0.3'
+    slf4jVersion = '2.0.6'
 }
 
 libraries.slf4j = "org.slf4j:slf4j-api:${slf4jVersion}"
