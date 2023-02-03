@@ -1,6 +1,7 @@
 package nl.bertriksikken.packetbroker;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 
@@ -18,15 +19,17 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 public final class PacketBrokerClient {
 
     private static final Logger LOG = LoggerFactory.getLogger(PacketBrokerClient.class);
-    private IPacketBrokerRestApi restApi;
+    private final IPacketBrokerRestApi restApi;
 
     PacketBrokerClient(IPacketBrokerRestApi restApi, PacketBrokerConfig config) {
         this.restApi = Preconditions.checkNotNull(restApi);
     }
 
     public static final PacketBrokerClient create(PacketBrokerConfig config) {
-        LOG.info("Creating new REST client for URL '{}' with timeout {}", config.getUrl(), config.getTimeout());
-        OkHttpClient httpClient = new OkHttpClient().newBuilder().callTimeout(config.getTimeout()).build();
+        Duration timeout = config.getTimeout();
+        LOG.info("Creating new REST client for URL '{}' with timeout {}", config.getUrl(), timeout);
+        OkHttpClient httpClient = new OkHttpClient().newBuilder().connectTimeout(timeout).readTimeout(timeout)
+                .writeTimeout(timeout).build();
         Retrofit retrofit = new Retrofit.Builder().baseUrl(config.getUrl())
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(JacksonConverterFactory.create()).client(httpClient).build();
