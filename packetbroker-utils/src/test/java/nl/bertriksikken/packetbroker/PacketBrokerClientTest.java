@@ -14,10 +14,12 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.core.FormatSchema;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 
+import nl.bertriksikken.geojson.FeatureCollection;
+import nl.bertriksikken.geojson.FeatureCollection.Feature;
+import nl.bertriksikken.geojson.FeatureCollection.GeoJsonGeometry;
+import nl.bertriksikken.geojson.FeatureCollection.PointGeometry;
 import nl.bertriksikken.packetbroker.export.GatewayInfoCsv;
 
 public final class PacketBrokerClientTest {
@@ -55,7 +57,7 @@ public final class PacketBrokerClientTest {
 
         // write all GWs with location to CSV
         writeCsv(gwsWithLocation, new File("all_gateways.csv"));
-        
+
         // write TTN geojson
         writeGeojson(ttnGateways, new File("ttn_gateways.json"));
 
@@ -69,36 +71,23 @@ public final class PacketBrokerClientTest {
         List<GatewayInfo> filtered = gateways.stream().filter(g -> g.location.isValid()).collect(Collectors.toList());
 
         ObjectMapper mapper = new ObjectMapper();
-        ObjectNode root = mapper.createObjectNode();
-        root.put("type", "FeatureCollection");
-        ArrayNode features = mapper.createArrayNode();
-        root.set("features", features);
+        FeatureCollection featureCollection = new FeatureCollection();
         for (GatewayInfo gatewayInfo : filtered) {
-            ObjectNode feature = mapper.createObjectNode();
-            features.add(feature);
-            feature.put("type", "Feature");
-
-            ObjectNode geometry = mapper.createObjectNode();
-            feature.set("geometry", geometry);
-            geometry.put("type", "Point");
-            ArrayNode coordinates = mapper.createArrayNode();
-            geometry.set("coordinates", coordinates);
-            coordinates.add(gatewayInfo.location.longitude);
-            coordinates.add(gatewayInfo.location.latitude);
+            GeoJsonGeometry geometry = new PointGeometry(gatewayInfo.location.latitude, gatewayInfo.location.longitude);
+            Feature feature = new Feature(geometry);
 
             // feature properties
-            ObjectNode properties = mapper.createObjectNode();
-            feature.set("properties", properties);
-            properties.put("id", gatewayInfo.id);
-            properties.put("tenantID", gatewayInfo.tenantId);
-            properties.put("eui", gatewayInfo.eui);
-            properties.put("altitude", gatewayInfo.location.altitude);
-            properties.put("online", gatewayInfo.online);
-            properties.put("antennaPlacement", gatewayInfo.antennaPlacement.toString());
-            properties.put("antennaCount", gatewayInfo.antennaCount);
-        }
+            feature.addProperty("id", gatewayInfo.id);
+            feature.addProperty("tenantID", gatewayInfo.tenantId);
+            feature.addProperty("eui", gatewayInfo.eui);
+            feature.addProperty("altitude", gatewayInfo.location.altitude);
+            feature.addProperty("online", gatewayInfo.online);
+            feature.addProperty("antennaPlacement", gatewayInfo.antennaPlacement.toString());
+            feature.addProperty("antennaCount", gatewayInfo.antennaCount);
 
-        mapper.writeValue(file, root);
+            featureCollection.add(feature);
+        }
+        mapper.writeValue(file, featureCollection);
     }
 
     private void writeCsv(List<GatewayInfo> gateways, File file) throws IOException {
