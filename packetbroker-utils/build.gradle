@@ -3,7 +3,6 @@ apply plugin: "application"
 mainClassName = 'nl.bertriksikken.packetbroker'
 
 dependencies {
-    implementation libraries.guava
     implementation libraries.retrofit
     implementation libraries.jackson
     implementation libraries.reload4j

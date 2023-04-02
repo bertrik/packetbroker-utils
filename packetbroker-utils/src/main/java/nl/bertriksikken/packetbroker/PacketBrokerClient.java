@@ -4,11 +4,10 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Preconditions;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Response;
@@ -22,7 +21,7 @@ public final class PacketBrokerClient {
     private final IPacketBrokerRestApi restApi;
 
     PacketBrokerClient(IPacketBrokerRestApi restApi, PacketBrokerConfig config) {
-        this.restApi = Preconditions.checkNotNull(restApi);
+        this.restApi = Objects.requireNonNull(restApi);
     }
 
     public static final PacketBrokerClient create(PacketBrokerConfig config) {
