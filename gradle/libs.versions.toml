@@ -1,0 +1,33 @@
+[versions]
+jackson = "2.14.2"
+retrofit2 = "2.9.0"
+slf4j = "2.0.7"
+
+[libraries]
+jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
+jackson-dataformat-csv = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-csv", version.ref = "jackson" }
+jackson-dataformat-xml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-xml", version.ref = "jackson" }
+jackson-dataformat-yaml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml", version.ref = "jackson" }
+jackson-datatype-jsr310 = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310", version.ref = "jackson" }
+
+com-github-spotbugs = "com.github.spotbugs:spotbugs:4.7.3"
+
+retrofit2-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit2" }
+retrofit2-converter-jackson = { module = "com.squareup.retrofit2:converter-jackson", version.ref = "retrofit2" }
+retrofit2-converter-scalars = { module = "com.squareup.retrofit2:converter-scalars", version.ref = "retrofit2" }
+
+junit = "junit:junit:4.13.2"
+
+slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
+slf4j-reload4j = { module = "org.slf4j:slf4j-reload4j", version.ref = "slf4j" }
+
+[bundles]
+jackson = ["jackson-databind", "jackson-dataformat-csv", "jackson-dataformat-xml", "jackson-dataformat-yaml", "jackson-datatype-jsr310"]
+retrofit = ["retrofit2-retrofit", "retrofit2-converter-jackson", "retrofit2-converter-scalars"]
+
+[plugins]
+versions = "com.github.ben-manes.versions:0.46.0"
+spotbugs = "com.github.spotbugs:5.0.14"
+version-catalog-update = "nl.littlerobots.version-catalog-update:0.8.0"
+dependencycheck = "org.owasp.dependencycheck:8.2.1"
+

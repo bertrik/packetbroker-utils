@@ -3,9 +3,9 @@ apply plugin: "application"
 mainClassName = 'nl.bertriksikken.packetbroker'
 
 dependencies {
-    implementation libraries.retrofit
-    implementation libraries.jackson
-    implementation libraries.reload4j
+    implementation libs.bundles.retrofit
+    implementation libs.bundles.jackson
+    implementation libs.slf4j.reload4j
 }
 
 // fix scripts executable bit and line endings
