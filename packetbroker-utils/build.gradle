@@ -1,6 +1,8 @@
 apply plugin: "application"
 
-mainClassName = 'nl.bertriksikken.packetbroker'
+application {
+    mainClass = 'nl.bertriksikken.packetbroker'
+}
 
 dependencies {
     implementation libs.bundles.retrofit
