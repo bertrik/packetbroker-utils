@@ -24,7 +24,7 @@ import nl.bertriksikken.packetbroker.export.GatewayInfoCsv;
 
 public final class PacketBrokerClientTest {
 
-    private static final Logger LOG = LoggerFactory.getLogger(PacketBrokerClient.class);
+    private static final Logger LOG = LoggerFactory.getLogger(PacketBrokerClientTest.class);
 
     public static void main(String[] args) throws IOException {
         PacketBrokerClientTest test = new PacketBrokerClientTest();

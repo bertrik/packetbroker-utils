@@ -77,7 +77,7 @@ public final class GatewayInfo {
         }
     }
 
-    public static enum EAntennaPlacement {
+    public enum EAntennaPlacement {
         UNKNOWN, //
         INDOOR, OUTDOOR,
     }

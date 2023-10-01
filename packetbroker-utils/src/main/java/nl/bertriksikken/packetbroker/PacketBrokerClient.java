@@ -20,7 +20,7 @@ public final class PacketBrokerClient {
     private static final Logger LOG = LoggerFactory.getLogger(PacketBrokerClient.class);
     private final IPacketBrokerRestApi restApi;
 
-    PacketBrokerClient(IPacketBrokerRestApi restApi, PacketBrokerConfig config) {
+    PacketBrokerClient(IPacketBrokerRestApi restApi) {
         this.restApi = Objects.requireNonNull(restApi);
     }
 
@@ -33,7 +33,7 @@ public final class PacketBrokerClient {
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(JacksonConverterFactory.create()).client(httpClient).build();
         IPacketBrokerRestApi restApi = retrofit.create(IPacketBrokerRestApi.class);
-        return new PacketBrokerClient(restApi, config);
+        return new PacketBrokerClient(restApi);
     }
 
     public List<GatewayInfo> getAllGateways() throws IOException {
