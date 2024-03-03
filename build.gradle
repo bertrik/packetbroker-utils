@@ -3,7 +3,6 @@ plugins {
     alias libs.plugins.dependencycheck
     alias libs.plugins.versions
     alias libs.plugins.version.catalog.update
-    alias libs.plugins.sonarqube
 }
 
 def isNonStable = { String version ->

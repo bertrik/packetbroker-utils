@@ -30,5 +30,4 @@ versions = "com.github.ben-manes.versions:0.51.0"
 spotbugs = "com.github.spotbugs:5.1.2"
 version-catalog-update = "nl.littlerobots.version-catalog-update:0.8.4"
 dependencycheck = "org.owasp.dependencycheck:8.4.3"
-sonarqube = "org.sonarqube:4.4.1.3373"
 
