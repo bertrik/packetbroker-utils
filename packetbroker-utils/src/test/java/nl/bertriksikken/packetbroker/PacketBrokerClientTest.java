@@ -1,5 +1,16 @@
 package nl.bertriksikken.packetbroker;
 
+import com.fasterxml.jackson.core.FormatSchema;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.csv.CsvMapper;
+import nl.bertriksikken.geojson.FeatureCollection;
+import nl.bertriksikken.geojson.FeatureCollection.Feature;
+import nl.bertriksikken.geojson.FeatureCollection.GeoJsonGeometry;
+import nl.bertriksikken.geojson.FeatureCollection.PointGeometry;
+import nl.bertriksikken.packetbroker.export.GatewayInfoCsv;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -7,20 +18,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.stream.Collectors;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.core.FormatSchema;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.csv.CsvMapper;
-
-import nl.bertriksikken.geojson.FeatureCollection;
-import nl.bertriksikken.geojson.FeatureCollection.Feature;
-import nl.bertriksikken.geojson.FeatureCollection.GeoJsonGeometry;
-import nl.bertriksikken.geojson.FeatureCollection.PointGeometry;
-import nl.bertriksikken.packetbroker.export.GatewayInfoCsv;
 
 public final class PacketBrokerClientTest {
 
@@ -39,36 +36,33 @@ public final class PacketBrokerClientTest {
         List<GatewayInfo> gateways = client.getAllGateways();
 
         // total gateways
-        LOG.info("Got {} total gateways", gateways.size());
+        LOG.info("Total gateways: {}", gateways.size());
+
+        // Online gateways
+        List<GatewayInfo> onlineGateways = gateways.stream().filter(g -> g.online).toList();
+        LOG.info("Online gateways: {}", onlineGateways.size());
 
         // gateways with location
-        List<GatewayInfo> gwsWithLocation = gateways.stream().filter(g -> g.location.isValid())
-                .collect(Collectors.toList());
-        LOG.info("Total gateways with location: {}", gwsWithLocation.size());
+        List<GatewayInfo> gwsWithLocation = onlineGateways.stream().filter(g -> g.location.isValid()).toList();
+        LOG.info("Online gateways with location: {}", gwsWithLocation.size());
 
         // TTN gateways with location
-        List<GatewayInfo> ttnGateways = gwsWithLocation.stream().filter(g -> g.tenantId.equals("ttn"))
-                .collect(Collectors.toList());
+        List<GatewayInfo> ttnGateways = gwsWithLocation.stream().filter(g -> g.tenantId.equals("ttn")).toList();
         LOG.info("Online TTN gateways with location: {}", ttnGateways.size());
 
         // analyse tenants
         LOG.info("Gateways with location, by tenant:");
         analyzeTenants(gwsWithLocation);
 
-        // write all GWs with location to CSV
+        // write online GWs with location to CSV
         writeCsv(gwsWithLocation, new File("all_gateways.csv"));
 
-        // write TTN geojson
-        writeGeojson(ttnGateways, new File("ttn_gateways.json"));
-
-        // write non-TTN geojson
-        List<GatewayInfo> nonTtnGateways = gateways.stream().filter(g -> !g.tenantId.equals("ttn"))
-                .filter(g -> g.location.isValid()).collect(Collectors.toList());
-        writeGeojson(nonTtnGateways, new File("non_ttn_gateways.json"));
+        // write online GWs with location as geojson
+        writeGeojson(gwsWithLocation, new File("all_gateways.json"));
     }
 
     private void writeGeojson(List<GatewayInfo> gateways, File file) throws IOException {
-        List<GatewayInfo> filtered = gateways.stream().filter(g -> g.location.isValid()).collect(Collectors.toList());
+        List<GatewayInfo> filtered = gateways.stream().filter(g -> g.location.isValid()).toList();
 
         ObjectMapper mapper = new ObjectMapper();
         FeatureCollection featureCollection = new FeatureCollection();
