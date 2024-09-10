@@ -5,8 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import nl.bertriksikken.geojson.FeatureCollection;
 import nl.bertriksikken.geojson.FeatureCollection.Feature;
-import nl.bertriksikken.geojson.FeatureCollection.GeoJsonGeometry;
-import nl.bertriksikken.geojson.FeatureCollection.PointGeometry;
+import nl.bertriksikken.geojson.GeoJsonGeometry;
 import nl.bertriksikken.packetbroker.export.GatewayInfoCsv;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,7 +66,7 @@ public final class PacketBrokerClientTest {
         ObjectMapper mapper = new ObjectMapper();
         FeatureCollection featureCollection = new FeatureCollection();
         for (GatewayInfo gatewayInfo : filtered) {
-            GeoJsonGeometry geometry = new PointGeometry(gatewayInfo.location.latitude, gatewayInfo.location.longitude);
+            GeoJsonGeometry geometry = new GeoJsonGeometry.Point(gatewayInfo.location.latitude, gatewayInfo.location.longitude);
             Feature feature = new Feature(geometry);
 
             // feature properties
