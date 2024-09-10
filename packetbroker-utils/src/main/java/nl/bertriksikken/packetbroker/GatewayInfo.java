@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * @see https://packetbroker.net/getting-started/api/
+ * See <a href="https://packetbroker.net/getting-started/api/">API</a>
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public final class GatewayInfo {
