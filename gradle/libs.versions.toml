@@ -30,5 +30,4 @@ retrofit = ["retrofit2-retrofit", "retrofit2-converter-jackson", "retrofit2-conv
 dependencycheck = "org.owasp.dependencycheck:8.4.3"
 errorprone = "net.ltgt.errorprone:4.0.1"
 versions = "com.github.ben-manes.versions:0.51.0"
-version-catalog-update = "nl.littlerobots.version-catalog-update:0.8.4"
 
