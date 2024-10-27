@@ -1,9 +1,9 @@
 package nl.bertriksikken.packetbroker;
 
-import java.util.Locale;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Locale;
 
 /**
  * See <a href="https://packetbroker.net/getting-started/api/">API</a>
@@ -53,27 +53,15 @@ public final class GatewayInfo {
                 updatedAt, location, antennaPlacement, antennaCount, online, rxRate, txRate);
     }
 
-    public static final class Location {
-        @JsonProperty("latitude")
-        public double latitude = Double.NaN;
-
-        @JsonProperty("longitude")
-        public double longitude = Double.NaN;
-
-        @JsonProperty("altitude")
-        public double altitude = Double.NaN;
-
-        @JsonProperty("accuracy")
-        public double accuracy = Double.NaN;
+    public record Location(@JsonProperty("latitude") double latitude, @JsonProperty("longitude") double longitude,
+                            @JsonProperty("altitude") double altitude, @JsonProperty("accuracy") double accuracy) {
+        // no-arg jackson constructor
+        Location() {
+            this(Double.NaN, Double.NaN, Double.NaN, Double.NaN);
+        }
 
         public boolean isValid() {
             return Double.isFinite(latitude) && Double.isFinite(longitude) && Double.isFinite(altitude);
-        }
-
-        @Override
-        public String toString() {
-            return String.format(Locale.ROOT, "{latitude=%f,longitude=%f,altitude=%f,accuracy=%f}", latitude, longitude,
-                    altitude, accuracy);
         }
     }
 

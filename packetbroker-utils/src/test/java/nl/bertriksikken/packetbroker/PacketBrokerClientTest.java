@@ -2,6 +2,7 @@ package nl.bertriksikken.packetbroker;
 
 import com.fasterxml.jackson.core.FormatSchema;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SequenceWriter;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import nl.bertriksikken.geojson.FeatureCollection;
 import nl.bertriksikken.geojson.FeatureCollection.Feature;
@@ -66,14 +67,15 @@ public final class PacketBrokerClientTest {
         ObjectMapper mapper = new ObjectMapper();
         FeatureCollection featureCollection = new FeatureCollection();
         for (GatewayInfo gatewayInfo : filtered) {
-            GeoJsonGeometry geometry = new GeoJsonGeometry.Point(gatewayInfo.location.latitude, gatewayInfo.location.longitude);
+            GeoJsonGeometry geometry = new GeoJsonGeometry.Point(gatewayInfo.location.latitude(),
+                    gatewayInfo.location.longitude());
             Feature feature = new Feature(geometry);
 
             // feature properties
             feature.addProperty("id", gatewayInfo.id);
             feature.addProperty("tenantID", gatewayInfo.tenantId);
             feature.addProperty("eui", gatewayInfo.eui);
-            feature.addProperty("altitude", gatewayInfo.location.altitude);
+            feature.addProperty("altitude", gatewayInfo.location.altitude());
             feature.addProperty("online", gatewayInfo.online);
             feature.addProperty("antennaPlacement", gatewayInfo.antennaPlacement.toString());
             feature.addProperty("antennaCount", gatewayInfo.antennaCount);
@@ -89,7 +91,7 @@ public final class PacketBrokerClientTest {
         for (GatewayInfo gw : gateways) {
             if (gw.location.isValid()) {
                 GatewayInfoCsv csvGw = new GatewayInfoCsv(gw.id, gw.eui, gw.tenantId);
-                csvGw.setAntenna(gw.location.latitude, gw.location.longitude, gw.location.altitude,
+                csvGw.setAntenna(gw.location.latitude(), gw.location.longitude(), gw.location.altitude(),
                         gw.antennaPlacement);
                 csvGw.setStatus(gw.online);
                 csvGateways.add(csvGw);
@@ -97,7 +99,9 @@ public final class PacketBrokerClientTest {
         }
         CsvMapper mapper = new CsvMapper();
         FormatSchema schema = mapper.schemaFor(GatewayInfoCsv.class).withHeader();
-        mapper.writer(schema).writeValues(file).writeAll(csvGateways);
+        try (SequenceWriter writer = mapper.writer(schema).writeValues(file) ) {
+            writer.writeAll(csvGateways);
+        }
     }
 
     private void analyzeTenants(List<GatewayInfo> gateways) {
