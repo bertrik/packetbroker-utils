@@ -32,33 +32,34 @@ public final class PacketBrokerClientTest {
         LOG.info("Starting PacketBrokerClientTest");
 
         PacketBrokerConfig config = new PacketBrokerConfig();
-        PacketBrokerClient client = PacketBrokerClient.create(config);
-        List<GatewayInfo> gateways = client.getAllGateways();
+        try (PacketBrokerClient client = PacketBrokerClient.create(config)) {
+            List<GatewayInfo> gateways = client.getAllGateways();
 
-        // total gateways
-        LOG.info("Total gateways: {}", gateways.size());
+            // total gateways
+            LOG.info("Total gateways: {}", gateways.size());
 
-        // Online gateways
-        List<GatewayInfo> onlineGateways = gateways.stream().filter(g -> g.online).toList();
-        LOG.info("Online gateways: {}", onlineGateways.size());
+            // Online gateways
+            List<GatewayInfo> onlineGateways = gateways.stream().filter(g -> g.online).toList();
+            LOG.info("Online gateways: {}", onlineGateways.size());
 
-        // gateways with location
-        List<GatewayInfo> gwsWithLocation = onlineGateways.stream().filter(g -> g.location.isValid()).toList();
-        LOG.info("Online gateways with location: {}", gwsWithLocation.size());
+            // gateways with location
+            List<GatewayInfo> gwsWithLocation = onlineGateways.stream().filter(g -> g.location.isValid()).toList();
+            LOG.info("Online gateways with location: {}", gwsWithLocation.size());
 
-        // TTN gateways with location
-        List<GatewayInfo> ttnGateways = gwsWithLocation.stream().filter(g -> g.tenantId.equals("ttn")).toList();
-        LOG.info("Online TTN gateways with location: {}", ttnGateways.size());
+            // TTN gateways with location
+            List<GatewayInfo> ttnGateways = gwsWithLocation.stream().filter(g -> g.tenantId.equals("ttn")).toList();
+            LOG.info("Online TTN gateways with location: {}", ttnGateways.size());
 
-        // analyse tenants
-        LOG.info("Gateways with location, by tenant:");
-        analyzeTenants(gwsWithLocation);
+            // analyse tenants
+            LOG.info("Gateways with location, by tenant:");
+            analyzeTenants(gwsWithLocation);
 
-        // write online GWs with location to CSV
-        writeCsv(gwsWithLocation, new File("all_gateways.csv"));
+            // write online GWs with location to CSV
+            writeCsv(gwsWithLocation, new File("all_gateways.csv"));
 
-        // write online GWs with location as geojson
-        writeGeojson(gwsWithLocation, new File("all_gateways.json"));
+            // write online GWs with location as geojson
+            writeGeojson(gwsWithLocation, new File("all_gateways.json"));
+        }
     }
 
     private void writeGeojson(List<GatewayInfo> gateways, File file) throws IOException {
@@ -99,7 +100,7 @@ public final class PacketBrokerClientTest {
         }
         CsvMapper mapper = new CsvMapper();
         FormatSchema schema = mapper.schemaFor(GatewayInfoCsv.class).withHeader();
-        try (SequenceWriter writer = mapper.writer(schema).writeValues(file) ) {
+        try (SequenceWriter writer = mapper.writer(schema).writeValues(file)) {
             writer.writeAll(csvGateways);
         }
     }
