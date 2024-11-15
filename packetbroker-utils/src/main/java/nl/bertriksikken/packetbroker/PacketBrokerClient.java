@@ -24,12 +24,12 @@ public final class PacketBrokerClient {
         this.restApi = Objects.requireNonNull(restApi);
     }
 
-    public static final PacketBrokerClient create(PacketBrokerConfig config) {
+    public static PacketBrokerClient create(PacketBrokerConfig config) {
         Duration timeout = config.getTimeout();
-        LOG.info("Creating new REST client for URL '{}' with timeout {}", config.getUrl(), timeout);
+        LOG.info("Creating new REST client for URL '{}' with timeout {}", config.url(), timeout);
         OkHttpClient httpClient = new OkHttpClient().newBuilder().connectTimeout(timeout).readTimeout(timeout)
                 .writeTimeout(timeout).build();
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(config.getUrl())
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(config.url())
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(JacksonConverterFactory.create()).client(httpClient).build();
         IPacketBrokerRestApi restApi = retrofit.create(IPacketBrokerRestApi.class);
