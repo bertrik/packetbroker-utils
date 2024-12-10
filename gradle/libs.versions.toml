@@ -1,5 +1,6 @@
 [versions]
 jackson = "2.18.0"
+junit = "5.11.3"
 retrofit2 = "2.11.0"
 slf4j = "2.0.16"
 errorprone = "2.34.0"
@@ -17,7 +18,9 @@ retrofit2-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref =
 retrofit2-converter-jackson = { module = "com.squareup.retrofit2:converter-jackson", version.ref = "retrofit2" }
 retrofit2-converter-scalars = { module = "com.squareup.retrofit2:converter-scalars", version.ref = "retrofit2" }
 
-junit = "junit:junit:4.13.2"
+junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
 
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
 slf4j-reload4j = { module = "org.slf4j:slf4j-reload4j", version.ref = "slf4j" }

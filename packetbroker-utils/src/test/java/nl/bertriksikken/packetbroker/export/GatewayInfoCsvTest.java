@@ -1,12 +1,11 @@
 package nl.bertriksikken.packetbroker.export;
 
-import org.junit.Assert;
-import org.junit.Test;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 
 import nl.bertriksikken.packetbroker.GatewayInfo.EAntennaPlacement;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public final class GatewayInfoCsvTest {
 
@@ -15,11 +14,11 @@ public final class GatewayInfoCsvTest {
         GatewayInfoCsv info = new GatewayInfoCsv("id", "eui", "tenant");
         info.setStatus(true);
         info.setAntenna(53.7, 4.7, 0.0, EAntennaPlacement.INDOOR);
-        Assert.assertNotNull(info.toString());
+        Assertions.assertNotNull(info.toString());
 
         CsvMapper mapper = new CsvMapper();
         String csvData = mapper.writerWithSchemaFor(GatewayInfoCsv.class).writeValueAsString(info);
-        Assert.assertEquals("id,eui,tenant,true,53.7,4.7,0.0,INDOOR\n", csvData);
+        Assertions.assertEquals("id,eui,tenant,true,53.7,4.7,0.0,INDOOR\n", csvData);
     }
 
 }
