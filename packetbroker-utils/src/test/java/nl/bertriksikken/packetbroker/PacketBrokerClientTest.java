@@ -58,7 +58,7 @@ public final class PacketBrokerClientTest {
             writeCsv(gwsWithLocation, new File("all_gateways.csv"));
 
             // write online GWs with location as geojson
-            writeGeojson(gwsWithLocation, new File("all_gateways.json"));
+            writeGeojson(gwsWithLocation, new File("all_gateways.geojson"));
         }
     }
 
