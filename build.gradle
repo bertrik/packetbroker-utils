@@ -35,6 +35,10 @@ subprojects {
         }
     }
 
+    test {
+        useJUnitPlatform()
+    }
+
     // Standard libraries added to all projects
     dependencies {
         errorprone(libs.errorprone.core)
