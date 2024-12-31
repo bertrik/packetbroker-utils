@@ -39,15 +39,15 @@ public final class PacketBrokerClientTest {
             LOG.info("Total gateways: {}", gateways.size());
 
             // Online gateways
-            List<GatewayInfo> onlineGateways = gateways.stream().filter(g -> g.online).toList();
+            List<GatewayInfo> onlineGateways = gateways.stream().filter(GatewayInfo::online).toList();
             LOG.info("Online gateways: {}", onlineGateways.size());
 
             // gateways with location
-            List<GatewayInfo> gwsWithLocation = onlineGateways.stream().filter(g -> g.location.isValid()).toList();
+            List<GatewayInfo> gwsWithLocation = onlineGateways.stream().filter(g -> g.location().isValid()).toList();
             LOG.info("Online gateways with location: {}", gwsWithLocation.size());
 
             // TTN gateways with location
-            List<GatewayInfo> ttnGateways = gwsWithLocation.stream().filter(g -> g.tenantId.equals("ttn")).toList();
+            List<GatewayInfo> ttnGateways = gwsWithLocation.stream().filter(g -> g.tenantId().equals("ttn")).toList();
             LOG.info("Online TTN gateways with location: {}", ttnGateways.size());
 
             // analyse tenants
@@ -63,23 +63,23 @@ public final class PacketBrokerClientTest {
     }
 
     private void writeGeojson(List<GatewayInfo> gateways, File file) throws IOException {
-        List<GatewayInfo> filtered = gateways.stream().filter(g -> g.location.isValid()).toList();
+        List<GatewayInfo> filtered = gateways.stream().filter(g -> g.location().isValid()).toList();
 
         ObjectMapper mapper = new ObjectMapper();
         FeatureCollection featureCollection = new FeatureCollection();
         for (GatewayInfo gatewayInfo : filtered) {
-            GeoJsonGeometry geometry = new GeoJsonGeometry.Point(gatewayInfo.location.latitude(),
-                    gatewayInfo.location.longitude());
+            GeoJsonGeometry geometry = new GeoJsonGeometry.Point(gatewayInfo.location().latitude(),
+                    gatewayInfo.location().longitude());
             Feature feature = new Feature(geometry);
 
             // feature properties
-            feature.addProperty("id", gatewayInfo.id);
-            feature.addProperty("tenantID", gatewayInfo.tenantId);
-            feature.addProperty("eui", gatewayInfo.eui);
-            feature.addProperty("altitude", gatewayInfo.location.altitude());
-            feature.addProperty("online", gatewayInfo.online);
-            feature.addProperty("antennaPlacement", gatewayInfo.antennaPlacement.toString());
-            feature.addProperty("antennaCount", gatewayInfo.antennaCount);
+            feature.addProperty("id", gatewayInfo.id());
+            feature.addProperty("tenantID", gatewayInfo.tenantId());
+            feature.addProperty("eui", gatewayInfo.eui());
+            feature.addProperty("altitude", gatewayInfo.location().altitude());
+            feature.addProperty("online", gatewayInfo.online());
+            feature.addProperty("antennaPlacement", gatewayInfo.antennaPlacement().toString());
+            feature.addProperty("antennaCount", gatewayInfo.antennaCount());
 
             featureCollection.add(feature);
         }
@@ -90,11 +90,11 @@ public final class PacketBrokerClientTest {
         // convert into GatewayInfoCsv
         List<GatewayInfoCsv> csvGateways = new ArrayList<>();
         for (GatewayInfo gw : gateways) {
-            if (gw.location.isValid()) {
-                GatewayInfoCsv csvGw = new GatewayInfoCsv(gw.id, gw.eui, gw.tenantId);
-                csvGw.setAntenna(gw.location.latitude(), gw.location.longitude(), gw.location.altitude(),
-                        gw.antennaPlacement);
-                csvGw.setStatus(gw.online);
+            if (gw.location().isValid()) {
+                GatewayInfoCsv csvGw = new GatewayInfoCsv(gw.id(), gw.eui(), gw.tenantId());
+                csvGw.setAntenna(gw.location().latitude(), gw.location().longitude(), gw.location().altitude(),
+                        gw.antennaPlacement());
+                csvGw.setStatus(gw.online());
                 csvGateways.add(csvGw);
             }
         }
@@ -108,8 +108,8 @@ public final class PacketBrokerClientTest {
     private void analyzeTenants(List<GatewayInfo> gateways) {
         Map<String, Integer> uniqueTenants = new HashMap<>();
         for (GatewayInfo info : gateways) {
-            int count = uniqueTenants.getOrDefault(info.tenantId, 0);
-            uniqueTenants.put(info.tenantId, count + 1);
+            int count = uniqueTenants.getOrDefault(info.tenantId(), 0);
+            uniqueTenants.put(info.tenantId(), count + 1);
         }
         for (Entry<String, Integer> entry : uniqueTenants.entrySet()) {
             LOG.info("Tenant {}: {}", entry.getKey(), entry.getValue());

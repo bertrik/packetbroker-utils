@@ -23,14 +23,14 @@ public final class GatewayInfoTest {
         URL url = getClass().getClassLoader().getResource("gatewayinfo.json");
         GatewayInfo info = mapper.readValue(url, GatewayInfo.class);
         
-        Assertions.assertEquals("000013", info.netId);
-        Assertions.assertEquals("adra", info.tenantId);
-        Assertions.assertEquals("adra-tn-porthmadog", info.id);
-        Assertions.assertEquals("eu1.cloud.thethings.industries", info.clusterId);
-        Assertions.assertEquals("2022-08-28T11:03:07.154661Z", info.updatedAt);
-        Assertions.assertEquals(EAntennaPlacement.OUTDOOR, info.antennaPlacement);
-        Assertions.assertEquals(1, info.antennaCount);
-        Assertions.assertTrue(info.online);
+        Assertions.assertEquals("000013", info.netId());
+        Assertions.assertEquals("adra", info.tenantId());
+        Assertions.assertEquals("adra-tn-porthmadog", info.id());
+        Assertions.assertEquals("eu1.cloud.thethings.industries", info.clusterId());
+        Assertions.assertEquals("2022-08-28T11:03:07.154661Z", info.updatedAt());
+        Assertions.assertEquals(EAntennaPlacement.OUTDOOR, info.antennaPlacement());
+        Assertions.assertEquals(1, info.antennaCount());
+        Assertions.assertTrue(info.online());
     }
 
 }

@@ -3,58 +3,49 @@ package nl.bertriksikken.packetbroker;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.Locale;
+import java.util.Objects;
 
 /**
  * See <a href="https://packetbroker.net/getting-started/api/">API</a>
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class GatewayInfo {
+public record GatewayInfo(@JsonProperty("netID") String netId,
+                          @JsonProperty("tenantID") String tenantId,
+                          @JsonProperty("id") String id,
+                          @JsonProperty("eui") String eui,
+                          @JsonProperty("clusterID") String clusterId,
+                          @JsonProperty("updatedAt") String updatedAt,
+                          @JsonProperty("location") Location location,
+                          @JsonProperty("antennaPlacement") EAntennaPlacement antennaPlacement,
+                          @JsonProperty("antennaCount") int antennaCount,
+                          @JsonProperty("online") boolean online,
+                          @JsonProperty("rxRate") Double rxRate,
+                          @JsonProperty("txRate") Double txRate) {
 
-    @JsonProperty("netID")
-    public String netId = "";
+    public GatewayInfo {
+        netId = Objects.requireNonNullElse(netId, "");
+        tenantId = Objects.requireNonNullElse(tenantId, "");
+        id = Objects.requireNonNullElse(id, "");
+        eui = Objects.requireNonNullElse(eui, "");
+        clusterId = Objects.requireNonNullElse(clusterId, "");
+        updatedAt = Objects.requireNonNullElse(updatedAt, "");
+        location = Objects.requireNonNullElse(location, new Location());
+        antennaPlacement = Objects.requireNonNullElse(antennaPlacement, EAntennaPlacement.UNKNOWN);
+        rxRate = Objects.requireNonNullElse(rxRate, Double.NaN);
+        txRate = Objects.requireNonNullElse(txRate, Double.NaN);
+    }
 
-    @JsonProperty("tenantID")
-    public String tenantId = "";
+    public GatewayInfo() {
+        this(null, null, null, null, null, null, null, null, 0, false, null, null);
+    }
 
-    @JsonProperty("id")
-    public String id = "";
-
-    @JsonProperty("eui")
-    public String eui = "";
-
-    @JsonProperty("clusterID")
-    public String clusterId = "";
-
-    @JsonProperty("updatedAt")
-    public String updatedAt = "";
-
-    @JsonProperty("location")
-    public Location location = new Location();
-
-    @JsonProperty("antennaPlacement")
-    public EAntennaPlacement antennaPlacement = EAntennaPlacement.UNKNOWN;
-
-    @JsonProperty("antennaCount")
-    public int antennaCount = 0;
-
-    @JsonProperty("online")
-    public boolean online = false;
-
-    @JsonProperty("rxRate")
-    public double rxRate = Double.NaN;
-
-    @JsonProperty("txRate")
-    public double txRate = Double.NaN;
-
-    @Override
-    public String toString() {
-        return String.format(Locale.ROOT, "{%s,%s,%s,%s,%s,%s,%s,%s,%d,%s,%f,%f}", netId, tenantId, id, eui, clusterId,
-                updatedAt, location, antennaPlacement, antennaCount, online, rxRate, txRate);
+    public enum EAntennaPlacement {
+        UNKNOWN, //
+        INDOOR, OUTDOOR,
     }
 
     public record Location(@JsonProperty("latitude") double latitude, @JsonProperty("longitude") double longitude,
-                            @JsonProperty("altitude") double altitude, @JsonProperty("accuracy") double accuracy) {
+                           @JsonProperty("altitude") double altitude, @JsonProperty("accuracy") double accuracy) {
         // no-arg jackson constructor
         Location() {
             this(Double.NaN, Double.NaN, Double.NaN, Double.NaN);
@@ -63,11 +54,6 @@ public final class GatewayInfo {
         public boolean isValid() {
             return Double.isFinite(latitude) && Double.isFinite(longitude) && Double.isFinite(altitude);
         }
-    }
-
-    public enum EAntennaPlacement {
-        UNKNOWN, //
-        INDOOR, OUTDOOR,
     }
 
 }
