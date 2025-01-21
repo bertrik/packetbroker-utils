@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 public final class PacketBrokerClient implements AutoCloseable {
@@ -50,6 +51,17 @@ public final class PacketBrokerClient implements AutoCloseable {
         } else {
             LOG.warn("Got error: {}", response.errorBody().string());
             return Collections.emptyList();
+        }
+    }
+
+    public GatewayInfo getGatewayDetails(String netId, String tenantId, String id) throws IOException {
+        String query = String.format(Locale.ROOT, "netID=%s,tenantID=%s,id=%s", netId, tenantId, id);
+        Response<GatewayInfo> response = restApi.getGatewayDetails(query).execute();
+        if (response.isSuccessful()) {
+            return response.body();
+        } else {
+            LOG.warn("Got error: {}", response.errorBody().string());
+            return null;
         }
     }
 

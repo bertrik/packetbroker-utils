@@ -30,12 +30,16 @@ public final class PacketBrokerClientTest {
 
     private void run() throws IOException {
         LOG.info("Starting PacketBrokerClientTest");
+        ObjectMapper mapper = new ObjectMapper().findAndRegisterModules();
 
         PacketBrokerConfig config = new PacketBrokerConfig();
         try (PacketBrokerClient client = PacketBrokerClient.create(config)) {
-            List<GatewayInfo> gateways = client.getAllGateways();
+            // get single gateway
+            GatewayInfo info = client.getGatewayDetails("000013", "ttn", "bertrik-ttig-1");
+            LOG.info("Single gateway: {}", mapper.writeValueAsString(info));
 
             // total gateways
+            List<GatewayInfo> gateways = client.getAllGateways();
             LOG.info("Total gateways: {}", gateways.size());
 
             // Online gateways
