@@ -87,7 +87,7 @@ public final class PacketBrokerClientTest {
 
             featureCollection.add(feature);
         }
-        mapper.writeValue(file, featureCollection);
+        mapper.writerWithDefaultPrettyPrinter().writeValue(file, featureCollection);
     }
 
     private void writeCsv(List<GatewayInfo> gateways, File file) throws IOException {
