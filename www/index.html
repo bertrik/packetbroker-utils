@@ -69,7 +69,7 @@
           .then(dynamic => {
             const content = `<p>
               Online: ${dynamic.online}, Altitude: ${dynamic.location.altitude}m<br>
-              Rx/Tx: ${dynamic.rxRate} / ${dynamic.txRate}</p>`;
+              Rx/Tx: ${dynamic.rxRate.toFixed(1)} / ${dynamic.txRate.toFixed(1)}</p>`;
             popup.setContent(header + content).openOn(map);
           }).catch(error => {
             popup.setContent(header + `<p>Error fetching data</p>`).openOn(map);
