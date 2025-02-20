@@ -48,9 +48,8 @@
     // calculate radius (m) based on altitude
     function calcRadius(altitude) {
       var altitude = altitude || 0;
-      if (altitude < 1) {
-        altitude = 1;
-      }
+      altitude = Math.max(altitude, 1);
+      altitude = Math.min(altitude, 10000);
       return Math.sqrt(altitude) * 300;
     }
 
