@@ -62,7 +62,7 @@ public final class PacketBrokerClientTest {
             writeCsv(gwsWithLocation, new File("all_gateways.csv"));
 
             // write online GWs with location as geojson
-            writeGeojson(gwsWithLocation, new File("all_gateways.geojson"));
+            writeGeojson(gwsWithLocation, new File("www/gateways.geojson"));
         }
     }
 
@@ -77,8 +77,9 @@ public final class PacketBrokerClientTest {
             Feature feature = new Feature(geometry);
 
             // feature properties
-            feature.addProperty("id", gatewayInfo.id());
+            feature.addProperty("netID", gatewayInfo.netId());
             feature.addProperty("tenantID", gatewayInfo.tenantId());
+            feature.addProperty("id", gatewayInfo.id());
             feature.addProperty("eui", gatewayInfo.eui());
             feature.addProperty("altitude", gatewayInfo.location().altitude());
             feature.addProperty("online", gatewayInfo.online());
