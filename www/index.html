@@ -72,6 +72,12 @@
               Online: ${dynamic.online}, Altitude: ${dynamic.location.altitude}m<br>
               Rx/Tx: ${dynamic.rxRate.toFixed(1)} / ${dynamic.txRate.toFixed(1)}</p>`;
             popup.setContent(header + content).openOn(map);
+            if (!dynamic.online) {
+              layer.setStyle({
+                color: 'grey',
+                fillColor: 'lightgrey'
+              });
+            }
           }).catch(error => {
             popup.setContent(header + `<p>Error fetching data</p>`).openOn(map);
             console.error("Error fetching data:", error);
