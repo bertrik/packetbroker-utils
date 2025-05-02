@@ -67,11 +67,18 @@
         fetch(url)
           .then(response => response.json())
           .then(dynamic => {
-            const content = `<p>
-              ${dynamic.updatedAt}<br>
-              Online: ${dynamic.online}, Altitude: ${dynamic.location.altitude}m<br>
-              Rx/Tx: ${dynamic.rxRate.toFixed(1)} / ${dynamic.txRate.toFixed(1)}</p>`;
-            popup.setContent(header + content).openOn(map);
+            var content = `${dynamic.updatedAt}<br>`;
+            content += `Online: ${dynamic.online}, Altitude: ${dynamic.location.altitude}m<br>`
+            if (dynamic.technicalContact?.email) {
+              content += `Contact: ${dynamic.technicalContact.email}<br>`;
+            }
+            if (dynamic.rxRate) {
+              content += `Rx-rate: ${dynamic.rxRate.toFixed(1)} `;
+            }
+            if (dynamic.txRate) {
+              content += `Tx-rate: ${dynamic.txRate.toFixed(1)}`;
+            }
+            popup.setContent(header + '<p>' + content + '</p>').openOn(map);
             if (!dynamic.online) {
               layer.setStyle({
                 color: 'grey',
