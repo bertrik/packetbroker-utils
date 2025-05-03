@@ -69,8 +69,8 @@
           .then(dynamic => {
             var content = `${dynamic.updatedAt}<br>`;
             content += `Online: ${dynamic.online}, Altitude: ${dynamic.location.altitude}m<br>`
-            if (dynamic.technicalContact?.email) {
-              content += `Contact: ${dynamic.technicalContact.email}<br>`;
+            if (dynamic.technicalContact?.name) {
+              content += `Technical contact: ${dynamic.technicalContact.name}<br>`;
             }
             if (dynamic.rxRate) {
               content += `Rx-rate: ${dynamic.rxRate.toFixed(1)} `;
