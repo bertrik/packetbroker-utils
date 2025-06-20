@@ -1,7 +1,7 @@
 [versions]
-jackson = "2.19.0"
-junit = "5.12.2"
-retrofit2 = "2.11.0"
+jackson = "2.19.1"
+junit = "5.13.1"
+retrofit2 = "3.0.0"
 slf4j = "2.0.17"
 errorprone = "2.38.0"
 
