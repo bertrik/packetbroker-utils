@@ -28,6 +28,9 @@
     fetch('gateways.geojson')
       .then(response => response.json())
       .then(data => {
+        // Sort features by altitude to affect render ordering to small circles inside larger circles can be clicked
+        data.features.sort((a, b) => b.properties.altitude - a.properties.altitude);
+
         L.geoJSON(data, {
           pointToLayer: createMarker,
           onEachFeature: createPopup
