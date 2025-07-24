@@ -75,11 +75,14 @@
             if (dynamic.technicalContact?.name) {
               content += `Technical contact: ${dynamic.technicalContact.name}<br>`;
             }
-            if (dynamic.rxRate) {
-              content += `Rx-rate: ${dynamic.rxRate.toFixed(1)} `;
-            }
-            if (dynamic.txRate) {
-              content += `Tx-rate: ${dynamic.txRate.toFixed(1)}`;
+            if (dynamic.rxRate || dynamic.txRate) {
+                content += "Rate (pkt/h):";
+                if (dynamic.rxRate) {
+                    content += ` ${parseInt(dynamic.rxRate)} Rx`;
+                }
+                if (dynamic.txRate) {
+                    content += `, ${parseInt(dynamic.txRate)} Tx`;
+                }
             }
             popup.setContent(header + '<p>' + content + '</p>').openOn(map);
             if (!dynamic.online) {
