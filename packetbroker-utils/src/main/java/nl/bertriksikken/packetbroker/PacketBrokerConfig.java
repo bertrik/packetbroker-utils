@@ -12,7 +12,7 @@ import java.time.Duration;
 public record PacketBrokerConfig(@JsonProperty("url") String url, @JsonProperty("timeout") int timeoutSec) {
 
     // sensible defaults
-    PacketBrokerConfig() {
+    public PacketBrokerConfig() {
         this("https://mapper.packetbroker.net/", 30);
     }
 

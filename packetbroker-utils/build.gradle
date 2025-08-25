@@ -1,7 +1,7 @@
 apply plugin: "application"
 
 application {
-    mainClass = 'nl.bertriksikken.packetbroker'
+    mainClass = 'nl.bertriksikken.app.GatewayGeoJsonWriter'
 }
 
 dependencies {
