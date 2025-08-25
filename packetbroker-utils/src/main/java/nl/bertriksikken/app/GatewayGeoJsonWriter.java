@@ -50,7 +50,7 @@ public final class GatewayGeoJsonWriter {
     }
 
     private void writeGeojson(List<GatewayInfo> gateways, File file) throws IOException {
-        LOG.info("Writing geojson to '{}'", file.toPath().toRealPath());
+        LOG.info("Writing geojson to '{}'", file.getAbsolutePath());
 
         // include only gateways that have a location
         List<GatewayInfo> filtered = gateways.stream().filter(g -> g.location().isValid()).toList();
@@ -75,7 +75,7 @@ public final class GatewayGeoJsonWriter {
 
             featureCollection.add(feature);
         }
-        mapper.writerWithDefaultPrettyPrinter().writeValue(file, featureCollection);
+        mapper.writeValue(file, featureCollection);
     }
 
 }
